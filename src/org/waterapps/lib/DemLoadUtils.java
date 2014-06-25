@@ -29,6 +29,7 @@ public class DemLoadUtils {
 	DemData loadedDemData;
 	String demDirectory;
 	private static final int INITIAL_LOAD = 6502;
+	private static final int FILE_CHOOSER = 6503;
 	Context context;
 	SharedPreferences prefs;
 	static ATKMap map;
@@ -53,20 +54,20 @@ public class DemLoadUtils {
 		new ReadDemDataTask(context, this, wmacListener, demFile).execute(Uri.parse(Uri.encode(filePath)));
 	}
 
-	public void loadFileChooserData(Intent data) {
-		if (data != null) {
-			if (data.getData().toString().contains(".tif")) {
-				loadDem(data.getData().getPath());
-				return;
-			}
-		}
-		// Try to load the first demFile if no file was successfully chosen.
-		if (data == null) {
-			DemFile demToLoad = demFiles.get(0);
-			String filename = demToLoad.getFilePath();
-			loadDem(filename);
-		}
-	}
+//	public void loadFileChooserData(Intent data) {
+//		if (data != null) {
+//			if (data.getData().toString().contains(".tif")) {
+//				loadDem(data.getData().getPath());
+//				return;
+//			}
+//		}
+//		// Try to load the first demFile if no file was successfully chosen.
+//		if (data == null) {
+//			DemFile demToLoad = demFiles.get(0);
+//			String filename = demToLoad.getFilePath();
+//			loadDem(filename);
+//		}
+//	}
 
 	public void loadClickedDem(LatLng point) {
 		DemFile demFile;
@@ -199,7 +200,8 @@ public class DemLoadUtils {
 			} else {
 				Intent intent = new Intent("com.filebrowser.DataFileChooser");
 				intent.putExtra("path", demDirectory);
-				((Activity) context).startActivityForResult(intent, INITIAL_LOAD);
+				((Activity) context).startActivityForResult(intent, FILE_CHOOSER);
+//				((Activity) context).startActivityForResult(intent, INITIAL_LOAD);
 			}
 		}
 	}
